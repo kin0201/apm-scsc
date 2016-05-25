@@ -12,6 +12,12 @@ void userhook_init()
 void userhook_FastLoop()
 {
     // put your 100Hz code here
+    uint16_t nbytes = hal.uartD->available();
+    for (uint16_t i=0; i<nbytes; i++)
+    {
+        uint8_t c = hal.uartD->read();
+		hal.uartD->printf("%c",c);
+    }
 }
 #endif
 
