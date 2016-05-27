@@ -208,7 +208,7 @@ protected:
      * @param lon : longitude in 100 nano degrees (i.e. degree value multiplied by 10,000,000)
      * @param lat : latitude  in 100 nano degrees (i.e. degree value multiplied by 10,000,000)
      */
-    void        correct_with_gps(uint32_t now, int32_t lon, int32_t lat);
+    float        correct_with_gps(uint32_t now, int32_t lon, int32_t lat);
 
     /**
      * check_gps - checks if new gps readings have arrived and calls correct_with_gps to

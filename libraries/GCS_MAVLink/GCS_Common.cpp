@@ -339,7 +339,7 @@ void GCS_MAVLINK::handle_mission_count(AP_Mission &mission, mavlink_message_t *m
         mavlink_msg_mission_ack_send(chan, msg->sysid, msg->compid, MAV_MISSION_NO_SPACE);
         return;
     }
-
+	hal.uartD->printf("%d",mission.num_commands_max());
     // new mission arriving, truncate mission to be the same length
     mission.truncate(packet.count);
 

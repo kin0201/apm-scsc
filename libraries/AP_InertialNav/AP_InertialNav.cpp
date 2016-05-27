@@ -137,8 +137,8 @@ void AP_InertialNav::check_gps()
     if(gps.last_fix_time_ms() != _gps_last_time ) {
 
         // call position correction method
-        correct_with_gps(now, gps.location().lng, gps.location().lat);
-
+        float dt = correct_with_gps(now, gps.location().lng, gps.location().lat);
+		correct_with_baro(gps.location().alt-_ahrs.get_home().alt,dt);
         // record gps time and system time of this update
         _gps_last_time = gps.last_fix_time_ms();
     }else{
@@ -155,7 +155,7 @@ void AP_InertialNav::check_gps()
 }
 
 // correct_with_gps - modifies accelerometer offsets using gps
-void AP_InertialNav::correct_with_gps(uint32_t now, int32_t lon, int32_t lat)
+float AP_InertialNav::correct_with_gps(uint32_t now, int32_t lon, int32_t lat)
 {
     float dt,x,y;
     float hist_position_base_x, hist_position_base_y;
@@ -168,7 +168,7 @@ void AP_InertialNav::correct_with_gps(uint32_t now, int32_t lon, int32_t lat)
 
     // discard samples where dt is too large
     if( dt > 1.0f || dt == 0.0f || !_xy_enabled) {
-        return;
+        return dt;
     }
 
     // calculate distance from base location
@@ -206,6 +206,7 @@ void AP_InertialNav::correct_with_gps(uint32_t now, int32_t lon, int32_t lat)
 
     // update our internal record of glitching flag so that we can notice a change
     _flags.gps_glitching = _glitch_detector.glitching();
+	return dt;
 }
 
 // get accel based latitude

@@ -17,6 +17,7 @@ void userhook_FastLoop()
     {
         uint8_t c = hal.uartD->read();
 		hal.uartD->printf("%c",c);
+		gcs_send_text_P(SEVERITY_HIGH ,PSTR("get char!"));
     }
 }
 #endif
